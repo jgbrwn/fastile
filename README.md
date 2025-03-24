@@ -38,6 +38,9 @@ FASTile is a Wordle clone built using the FastHTML framework. It's a server-rend
 
 3. Open your browser and navigate to http://localhost:5001
 
+## DEMO
+https://fastile.vercel.app/
+
 ## Implementation Details
 
 This application is built using FastHTML, which combines:

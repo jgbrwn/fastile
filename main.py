@@ -15,7 +15,7 @@ app, rt = fast_app(
 # Load dictionary words
 def load_dictionary():
     print(f"Current working directory: {os.getcwd()}")
-    dictionary_path = "dictionary.txt"
+    dictionary_path = "dictionary567.txt"
     print(f"Checking if dictionary file exists at: {os.path.abspath(dictionary_path)}")
     print(f"Dictionary file exists: {os.path.exists(dictionary_path)}")
     
@@ -47,7 +47,7 @@ def create_basic_dictionary():
     import urllib.request
     try:
         print("Attempting to download dictionary from GitHub...")
-        url = "https://raw.githubusercontent.com/dwyl/english-words/master/words_alpha.txt"
+        url = "https://raw.githubusercontent.com/jgbrwn/fastile/refs/heads/main/dictionary567.txt"
         with urllib.request.urlopen(url) as response:
             words = response.read().decode('utf-8').splitlines()
             # Filter words by length and only keep alphabetic words
@@ -55,7 +55,7 @@ def create_basic_dictionary():
                              if word.isalpha() and 5 <= len(word) <= 7]
             
             print(f"Downloaded {len(filtered_words)} words")
-            with open("dictionary.txt", "w") as f:
+            with open("dictionary567.txt", "w") as f:
                 f.write("\n".join(filtered_words))
     except Exception as e:
         print(f"Download failed: {e}")
@@ -151,7 +151,7 @@ def create_basic_dictionary():
             "tales", "coach", "stiff", "flood", "verse", "awake", "rocky", "share",
             "crept", "sweat", "paths", "least", "grain", "brush", "jelly", "ought"
         ]
-        with open("dictionary.txt", "w") as f:
+        with open("dictionary567.txt", "w") as f:
             f.write("\n".join(basic_words))
 
 # Game state

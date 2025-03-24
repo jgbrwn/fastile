@@ -1,6 +1,6 @@
 # FASTile - A Wordle Clone
 
-FASTile is a Wordle clone built using the FastHTML framework. It's a server-rendered hypermedia application that requires minimal JavaScript.
+FASTile is a Wordle clone built using the [FastHTML framework](https://fastht.ml). It's a server-rendered hypermedia application that requires minimal JavaScript.
 
 ## Features
 
@@ -43,10 +43,10 @@ https://fastile.vercel.app/
 
 ## Implementation Details
 
-This application is built using FastHTML, which combines:
-- Starlette for the web framework
-- Uvicorn for the ASGI server
-- HTMX for interactive UI without JavaScript
-- FastTags for HTML generation in Python
+This application is built using [FastHTML](https://fastht.ml), which combines:
+- [Starlette](https://www.starlette.io/) for the web framework
+- [Uvicorn](https://www.uvicorn.org/) for the ASGI server
+- [HTMX](https://htmx.org) for interactive UI without JavaScript
+- [FastTags](https://fastht.ml/docs/explains/explaining_xt_components.html) for HTML generation in Python
 
 The game logic is entirely server-side, with HTMX handling the interactive elements.

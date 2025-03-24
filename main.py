@@ -421,6 +421,33 @@ def get(sess):
             background-color: var(--key-text);
             color: white;
         }
+        .game-footer {
+            border-top: 1px solid #d3d6da;  /* Same as header border */
+            padding-top: 1rem;              /* Space between line and text */
+            margin-top: 1rem;               /* Space between keyboard and line */
+            text-align: center;
+            margin-top: 1rem;
+            color: #333;
+            font-size: 1.1rem;
+            font-weight: bold;
+            font-family: 'Clear Sans', 'Helvetica Neue', Arial, sans-serif; /* Match header font */
+        }
+        .game-footer a {
+            color: #4a6baf;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 0 0.25rem;
+        }
+        .game-footer a:hover {
+            text-decoration: underline;
+        }
+        .github-logo {
+            width: 1.2em;
+            height: 1.2em;
+            vertical-align: middle;
+            margin-right: 0.3rem;
+            margin-bottom: 0.15rem;
+        }
     """)
     
     # Return the complete page
@@ -664,7 +691,22 @@ def render_game_container(game_state):
             <button hx-post="/new-game/{game_state.word_length}" hx-trigger="click" hx-target="#game-container">New Game</button>
         </div>
         '''
+    # Prepare footer
+    github_logo = '''
+    <svg class="github-logo" viewBox="0 0 24 24" aria-hidden="true">
+        <path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" 
+            d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+    </svg>
+    '''
     
+    # Create link fragments WITHOUT trailing spaces
+    fasthtml_link = '<a href="https://www.fastht.ml" target="_blank">FastHTML</a>'
+    htmx_link = '<a href="https://htmx.org" target="_blank">HTMX</a>'
+    github_link = f'<a href="https://github.com/jgbrwn/fastile" target="_blank">{github_logo}</a>'
+
+    # Assemble with precise spacing
+    footer_text = "Made with" + fasthtml_link + "and" + htmx_link + " | " + github_link
+
     # Combine all elements
     game_container = f'''
     <div id="game-container" class="game-container">
@@ -676,6 +718,7 @@ def render_game_container(game_state):
         {message_element}
         {game_over_elements}
         {keyboard}
+        <footer class="game-footer">{footer_text}</footer>
     </div>
     '''
     return game_container

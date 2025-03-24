@@ -243,6 +243,10 @@ def get(sess):
     
     # Add CSS
     css = Style("""
+        head > title {
+            display: none !important;  /* Ensures the title tag doesn't render visibly */
+        }
+
         :root {
             --correct-color: #6aaa64;
             --present-color: #c9b458;
@@ -452,6 +456,7 @@ def get(sess):
     
     # Return the complete page
     return Titled(
+        "FASTile",
         css,
         NotStr(render_game_container(game_state)),
         Script("""
@@ -710,9 +715,6 @@ def render_game_container(game_state):
     # Combine all elements
     game_container = f'''
     <div id="game-container" class="game-container">
-        <header>
-            <h1>FASTile</h1>
-        </header>
         {word_length_selector}
         {board}
         {message_element}

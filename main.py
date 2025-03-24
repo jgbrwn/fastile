@@ -8,7 +8,7 @@ import os
 
 # Initialize FastHTML app with debug mode to see errors
 app, rt = fast_app(
-    title="FASTile - Wordle Clone",
+    title="FASTile Word Game",
     debug=True  # Enable debug mode to see errors
 )
 
@@ -425,7 +425,6 @@ def get(sess):
     
     # Return the complete page
     return Titled(
-        "FASTile - Wordle Clone",
         css,
         NotStr(render_game_container(game_state)),
         Script("""

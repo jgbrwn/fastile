@@ -452,6 +452,25 @@ def get(sess):
             margin-right: 0.3rem;
             margin-bottom: 0.15rem;
         }
+        .title-separator-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .title-separator-line {
+            width: 8rem;           /* Slightly shorter than "FASTile" would be */
+            height: 1px;
+            background-color: #d3d6da;
+            margin-top: 0.5rem;    /* Space where the title would be */
+        }
+        /* Not being used but keeping for now */
+        .title-separator {
+            width: 6rem;               /* Adjust this to match title width */
+            height: 1px;
+            background-color: #d3d6da;  /* Same color as before */
+            margin: 0 auto 1rem;   /* Centered with bottom margin */
+        }
     """)
     
     # Return the complete page
@@ -712,9 +731,18 @@ def render_game_container(game_state):
     # Assemble with precise spacing
     footer_text = "Made with" + fasthtml_link + "and" + htmx_link + " | " + github_link
 
+    # Add separator
+    # Just the visual separator - no actual title text
+    separator = '''
+    <div class="title-separator-container">
+        <div class="title-separator-line"></div>
+    </div>
+    '''
+
     # Combine all elements
     game_container = f'''
     <div id="game-container" class="game-container">
+        {separator}
         {word_length_selector}
         {board}
         {message_element}

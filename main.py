@@ -311,21 +311,26 @@ def get(sess):
             text-transform: uppercase;
             user-select: none;
         }
-        .tile.evaluated {
-            transition: background-color 0.5s ease, color 0.5s ease;
-            animation: flip 0.5s ease forwards;
-        }
+
         .tile.correct {
             background-color: #6aaa64;
             color: white;
         }
+
         .tile.present {
             background-color: #c9b458;
             color: white;
         }
+
         .tile.absent {
             background-color: #787c7e;
             color: white;
+        }
+
+        /* Add this new animation class */
+        .tile-animate {
+            animation: flip 0.5s ease forwards;
+            transition: background-color 0.5s ease, color 0.5s ease;
         }
         
         @keyframes flip {
@@ -339,12 +344,14 @@ def get(sess):
             user-select: none;
             width: 100%;
             max-width: 500px;
+            min-width: 500px;
         }
         
         .keyboard-row {
             display: flex;
             justify-content: center;
             width: 100%;
+            min-width: 100%;
             margin: 0 auto 8px;
             touch-action: manipulation;
         }
@@ -356,6 +363,7 @@ def get(sess):
             padding: 0;
             margin: 0 6px 0 0;
             height: 3.5rem;
+            width: 3.5rem; /* Fixed width instead of flex */
             border-radius: 4px;
             cursor: pointer;
             user-select: none;
@@ -374,7 +382,7 @@ def get(sess):
         }
         
         .key.wide {
-            flex: 1.5;
+            width: 5.25rem; /* 1.5 × regular key width */
         }
         
         .key.correct {
@@ -391,7 +399,21 @@ def get(sess):
             background-color: var(--absent-color);
             color: white;
         }
-        
+
+        @media (max-width: 600px) {
+            .keyboard {
+                min-width: 100%;
+                max-width: 100%;
+            }
+            .key {
+                width: 2.5rem;
+                height: 3rem;
+            }
+            .key.wide {
+                width: 3.75rem;
+            }
+        }
+
         .message {
             margin: 1rem 0;
             font-weight: bold;
@@ -419,6 +441,13 @@ def get(sess):
             background-color: var(--key-bg);
             color: var(--key-text);
             border: none;
+        }
+
+        .word-length-selector-container {
+            height: 4rem; /* Fixed height */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
         
         .word-length-selector button.selected {
@@ -488,6 +517,13 @@ def get(sess):
                 const keyButton = document.querySelector(`button[hx-post="/key/${event.key}"]`);
                 if (keyButton) keyButton.click();
             }
+        });
+
+        // ADD THIS NEW CODE RIGHT AFTER THE EXISTING KEYBOARD HANDLER
+        document.addEventListener('htmx:afterSwap', function(evt) {
+            document.querySelectorAll('.tile-animate').forEach(el => {
+                el.classList.remove('tile-animate');
+            });
         });
         """)
     )
@@ -604,28 +640,30 @@ def render_game_container(game_state):
     for i in range(6):  # 6 rows for 6 guesses
         row_tiles = []
         for j in range(game_state.word_length):
-            # Check if this position has a letter from a previous guess
-            if i < len(game_state.guesses):
+            if i < len(game_state.guesses):  # Submitted guesses
                 guess = game_state.guesses[i]
                 if j < len(guess):
-                    # Get the evaluation for this letter
                     evaluation = evaluate_guess(guess, game_state.target_word)
+                    # Only animate if this is the most recently submitted row
+                    should_animate = (i == len(game_state.guesses) - 1)
                     tile_class = f"tile {evaluation[j]}"
-                    # Only add evaluated class to the current guess row
-                    if i == len(game_state.guesses) - 1:
-                        tile_class += " evaluated"
+                    if should_animate:
+                        tile_class += " tile-animate"
                     row_tiles.append(f'<div class="{tile_class}">{guess[j].upper()}</div>')
                 else:
                     row_tiles.append('<div class="tile"></div>')
-            # Check if this position has a letter from the current guess
-            elif i == len(game_state.guesses) and j < len(game_state.current_guess):
-                row_tiles.append(f'<div class="tile filled">{game_state.current_guess[j].upper()}</div>')
-            else:
+            elif i == len(game_state.guesses):  # Current typing row
+                if j < len(game_state.current_guess):
+                    row_tiles.append(f'<div class="tile filled">{game_state.current_guess[j].upper()}</div>')
+                else:
+                    row_tiles.append('<div class="tile"></div>')
+            else:  # Future rows
                 row_tiles.append('<div class="tile"></div>')
-        
+
         row_style = f'grid-template-columns: repeat({game_state.word_length}, 1fr); width: 100%;'
+
         board_rows.append(f'<div class="row" style="{row_style}">{"".join(row_tiles)}</div>')
-    
+
     board = f'<div class="board" id="game-board">{"".join(board_rows)}</div>'
     
     # Create the keyboard

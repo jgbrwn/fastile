@@ -8,7 +8,7 @@ FASTile is a Wordle clone built using the [FastHTML framework](https://fastht.ml
 - Real dictionary word validation
 - Visual keyboard that shows letter statuses
 - Responsive design
-- No JavaScript required (except for keyboard input handling)
+- JavaScript only for keyboard input handling
 
 ## How to Play
 
